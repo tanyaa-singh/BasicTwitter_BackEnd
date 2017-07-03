@@ -1,0 +1,66 @@
+*{
+	margin: 0;
+	padding:0;
+
+}
+
+body{
+	background-color: white;
+}
+
+h1{
+	position: absolute;
+	top:20px;
+	left:30%;
+	font-family: Roboto,sans serif;
+	color: white;
+	
+}
+
+img{
+	position: relative;
+	top:80px;
+	left:40%;
+	width:250px;
+	height:48px;
+}
+
+div{
+	position: relative;
+	background-color:#4099FF ;
+	width: 30%;
+	height: 500px;
+	left:35%;
+	top:100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	align-content: center;
+	padding-top: 10px;
+	border-radius: 5px;
+}
+
+h3{
+	color: white;
+}
+
+input{
+	width:100px;
+}
+
+.input{
+	width:250px;
+	height:20px;
+	border-radius: 5px;
+}
+
+
+
+.button{
+	    border-radius: 5px;
+    color: black;
+    position: relative;
+    margin-top: 28px;
+    margin-left: 65px;
+}

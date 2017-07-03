@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Twitter</title>
+</head>
+<body>
+
+<a href="/signout"> Sign Out </a>
+<h1>
+	<%=User.get(user_id).email%>&ensp;
+ </h1>
+
+ &ensp;<a href="/followers"><%=User.get(user_id).followers%> Followers</a>
+&ensp;<a href="/following"><%=User.get(user_id).following%> Following</a><br><br>
+
+<form action="/create_tweet" method="POST">
+
+
+<textarea name="content"></textarea>
+<br>
+
+<input type="submit" name="submit" value="Create Tweet">
+
+</form>
+
+
+<br>
+
+<h3>My Tweets</h3>
+<ul>
+
+	<% tweets.each do |tweets| %>
+		<% if user_id.to_s == tweets.user_id.to_s %>
+			
+			<li>
+				<%=tweets.content%>&emsp;<br>
+				<form action="/like" method="POST">
+					<input type="hidden" name="tweet_id" value="<%=tweets.id %>">
+
+					<% if tweets.liked_by user_id %>
+					<%= tweets.like_count %> Likes&ensp;
+					<input type="submit" name="submit" value="UnLike">
+
+					<% else %>
+					<%= tweets.like_count %> Likes&ensp;
+				<input type="submit" name="submit" value="Like">
+					<% end %>
+				</form>
+				<br>
+			</li>
+			
+		<%end%>
+	<%end%>
+</ul>
+
+
+
+<h3>See what others have to say</h3>
+<ul>
+
+<% tweets.each do |tweet| %>
+<% Follow.all(follower_id: user_id).each do |follow|%>
+
+<%if(follow.following_id==tweet.user_id)%>
+<li>
+
+<form action="/like" method="POST">
+	<input type="hidden" name="tweet_id" value="<%=tweet.id %>">
+
+	<% if tweet.liked_by user_id %>
+	<%=User.get(tweet.user_id).email%>:<%= tweet.content %> <br> 
+	<%= tweet.like_count %> Likes &ensp;
+	<input type="submit" name="submit" value="UnLike">
+
+	<% else %>
+	<%=User.get(tweet.user_id).email%>:<%= tweet.content %> <br> 
+	<%= tweet.like_count %> Likes&ensp;
+
+<input type="submit" name="submit" value="Like">
+	<% end %>
+</form>
+<br>
+
+</li>
+<%end%>
+<%end%>
+
+
+
+<% end %>
+
+</ul>
+<h3>Following</h3>
+<ul>
+	<% Follow.all(follower_id: user_id).each do |follow|%>
+		<li>
+			
+			
+			<form action="/unfollow" method="POST">
+				<input type="hidden" name="unfollow_id" value="<%=follow.following_id%>">
+				<%=User.get(follow.following_id).email%>&ensp;
+				&ensp;<a href="/followers"><%=User.get(follow.following_id).followers%> Followers</a>
+				&ensp;<a href="/following"><%=User.get(follow.following_id).following%> Following</a>&ensp;
+				<input type="submit" value="Unfollow">
+			</form>
+		</li>
+	<%end%>
+
+</ul>
+<h3>People you might want to follow</h3>
+<ul>
+	<% User.all.each do |user|%>
+
+		<%if user.id!=user_id %>
+				
+				<form action="/follow" method="POST">
+					<input type="hidden" name="following_id" value="<%=user.id%>">
+					
+					<%if !user.followed user_id %>
+					<li>
+						<%=user.email%>&ensp;
+						&ensp;<a href="/followers"><%=User.get(user.id).followers%> Followers</a>
+						&ensp;<a href="/following"><%=User.get(user.id).following%> Following</a>&ensp;
+						<input type="submit" value="Follow">
+					</li>
+					<%end%>
+					
+				</form>
+			
+		<%end%>
+
+	<%end%>
+</ul>
+
+
+</body>
+</html>
